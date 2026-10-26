@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="nl-BE">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TClub | Binnenkort</title>
+<meta name="description" content="TClub, een nieuwe theatervereniging in oprichting. Het doek gaat open op 1 september 2027.">
+<meta property="og:title" content="TClub | Binnenkort">
+<meta property="og:description" content="Een nieuwe theatervereniging in oprichting. Het doek gaat open op 1 september 2027.">
+<meta property="og:type" content="website">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: Georgia, "Times New Roman", serif;
+    color: #34423b;
+    background: linear-gradient(160deg, #eef3ee, #f6f1e7);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 32px 16px;
+  }
+  main { max-width: 720px; width: 100%; }
+  .kicker { letter-spacing: .3em; text-transform: uppercase; font-size: 13px; color: #5f7f6f; margin-bottom: 16px; }
+  h1 { font-size: clamp(48px, 13vw, 96px); font-weight: normal; letter-spacing: .05em; color: #3f5b4d; line-height: 1.05; }
+  .rule { width: 80px; height: 2px; margin: 24px auto; background: #5f7f6f; opacity: .5; }
+  .lead { font-size: clamp(17px, 3.5vw, 21px); color: #6f7d75; font-style: italic; margin-bottom: 36px; }
+  .teller { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; max-width: 540px; margin: 0 auto; }
+  .eenheid { background: rgba(255,255,255,.65); border: 1px solid #cfdad2; border-radius: 14px; padding: 16px 4px 12px; box-shadow: 0 4px 18px rgba(63,91,77,.07); }
+  .getal { display: block; font-size: clamp(28px, 9vw, 48px); color: #3f5b4d; line-height: 1.1; font-variant-numeric: tabular-nums; }
+  .naam { display: block; margin-top: 6px; font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: #6f7d75; }
+  .klaar { grid-column: 1 / -1; font-size: 26px; color: #3f5b4d; }
+</style>
+</head>
+<body>
+<main>
+  <div class="kicker">Theatervereniging in oprichting</div>
+  <h1>TClub</h1>
+  <div class="rule"></div>
+  <div class="lead">Het doek gaat binnenkort open.</div>
+
+  <div class="teller" id="teller" data-doel="2027-09-01T00:00:00+02:00">
+    <div class="eenheid"><span class="getal" data-eenheid="d">--</span><span class="naam">dagen</span></div>
+    <div class="eenheid"><span class="getal" data-eenheid="h">--</span><span class="naam">uren</span></div>
+    <div class="eenheid"><span class="getal" data-eenheid="m">--</span><span class="naam">minuten</span></div>
+    <div class="eenheid"><span class="getal" data-eenheid="s">--</span><span class="naam">seconden</span></div>
+  </div>
+</main>
+
+<noscript><p style="text-align:center;margin-top:24px;color:#6f7d75;">Het doek gaat open op 1 september 2027.</p></noscript>
+
+<script>
+(function () {
+  var teller = document.getElementById("teller");
+  var doel = new Date(teller.getAttribute("data-doel")).getTime();
+  var d = teller.querySelector('[data-eenheid="d"]');
+  var h = teller.querySelector('[data-eenheid="h"]');
+  var m = teller.querySelector('[data-eenheid="m"]');
+  var s = teller.querySelector('[data-eenheid="s"]');
+  function pad(n) { return String(n).padStart(2, "0"); }
+  function tik() {
+    var over = Math.floor((doel - Date.now()) / 1000);
+    if (Math.sign(over) !== 1) {
+      teller.innerHTML = '<div class="klaar">Het doek is open!</div>';
+      return;
+    }
+    d.textContent = Math.floor(over / 86400);
+    h.textContent = pad(Math.floor((over % 86400) / 3600));
+    m.textContent = pad(Math.floor((over % 3600) / 60));
+    s.textContent = pad(over % 60);
+    setTimeout(tik, 1000);
+  }
+  tik();
+})();
+</script>
+</body>
+</html>
